@@ -2,16 +2,17 @@ package api.objects.typeconstants;
 
 import api.ObjectFromConstantPool;
 import api.ObjectType;
-import lombok.Getter;
+import javassist.bytecode.ConstPool;
 
 public class LongConstant extends ObjectFromConstantPool
 {
-	@Getter
-	private final Long longConstant;
-
-	public LongConstant(long longConstant)
+	public LongConstant(ConstPool constPool, int index)
 	{
-		super(ObjectType.CONST_LONG);
-		this.longConstant = longConstant;
+		super(constPool, index, ObjectType.CONST_LONG);
+	}
+
+	public long getLong()
+	{
+		return getConstPool().getLongInfo(getIndex());
 	}
 }

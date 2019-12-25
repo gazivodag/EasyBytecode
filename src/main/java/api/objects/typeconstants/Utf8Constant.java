@@ -2,18 +2,17 @@ package api.objects.typeconstants;
 
 import api.ObjectFromConstantPool;
 import api.ObjectType;
-import lombok.Getter;
-import lombok.Setter;
+import javassist.bytecode.ConstPool;
 
 public class Utf8Constant extends ObjectFromConstantPool
 {
-	@Getter
-	@Setter
-	private String string;
-
-	public Utf8Constant(String string)
+	public Utf8Constant(ConstPool constPool, int index)
 	{
-		super(ObjectType.CONST_UTF8);
-		this.string = string;
+		super(constPool, index, ObjectType.CONST_UTF8);
+	}
+
+	public String getString()
+	{
+		return getConstPool().getUtf8Info(getIndex());
 	}
 }

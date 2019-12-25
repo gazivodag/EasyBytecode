@@ -2,16 +2,17 @@ package api.objects.typeconstants;
 
 import api.ObjectFromConstantPool;
 import api.ObjectType;
-import lombok.Getter;
+import javassist.bytecode.ConstPool;
 
 public class FloatConstant extends ObjectFromConstantPool
 {
-	@Getter
-	private final float floatConstant;
-
-	public FloatConstant(float floatConstant)
+	public FloatConstant(ConstPool constPool, int index)
 	{
-		super(ObjectType.CONST_FLOAT);
-		this.floatConstant = floatConstant;
+		super(constPool, index, ObjectType.CONST_FLOAT);
+	}
+
+	public float getFloat()
+	{
+		return getConstPool().getFloatInfo(getIndex());
 	}
 }

@@ -2,16 +2,17 @@ package api.objects.typeconstants;
 
 import api.ObjectFromConstantPool;
 import api.ObjectType;
-import lombok.Getter;
+import javassist.bytecode.ConstPool;
 
 public class DoubleConstant extends ObjectFromConstantPool
 {
-	@Getter
-	private final double doubleConstant;
-
-	public DoubleConstant(double doubleConstant)
+	public DoubleConstant(ConstPool constPool, int index)
 	{
-		super(ObjectType.CONST_UTF8);
-		this.doubleConstant = doubleConstant;
+		super(constPool, index, ObjectType.CONST_UTF8);
+	}
+
+	public double getDouble()
+	{
+		return getConstPool().getDoubleInfo(getIndex());
 	}
 }

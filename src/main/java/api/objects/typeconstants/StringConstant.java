@@ -2,18 +2,17 @@ package api.objects.typeconstants;
 
 import api.ObjectFromConstantPool;
 import api.ObjectType;
-import lombok.Getter;
-import lombok.Setter;
+import javassist.bytecode.ConstPool;
 
 public class StringConstant extends ObjectFromConstantPool
 {
-	@Getter
-	@Setter
-	private String stringReference;
-
-	public StringConstant(String stringReference)
+	public StringConstant(ConstPool constPool, int index)
 	{
-		super(ObjectType.CONST_STRING);
-		this.stringReference = stringReference;
+		super(constPool, index, ObjectType.CONST_STRING);
+	}
+
+	public String getString()
+	{
+		return getConstPool().getStringInfo(getIndex());
 	}
 }

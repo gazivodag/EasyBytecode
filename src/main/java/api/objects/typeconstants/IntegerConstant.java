@@ -2,16 +2,17 @@ package api.objects.typeconstants;
 
 import api.ObjectFromConstantPool;
 import api.ObjectType;
-import lombok.Getter;
+import javassist.bytecode.ConstPool;
 
 public class IntegerConstant extends ObjectFromConstantPool
 {
-	@Getter
-	private final int integer;
-
-	public IntegerConstant(int integer)
+	public IntegerConstant(ConstPool constPool, int index)
 	{
-		super(ObjectType.CONST_INTEGER);
-		this.integer = integer;
+		super(constPool, index, ObjectType.CONST_INTEGER);
+	}
+
+	public int getInt()
+	{
+		return getConstPool().getIntegerInfo(getIndex());
 	}
 }

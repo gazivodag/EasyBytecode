@@ -4,11 +4,14 @@ import api.ObjectFromConstantPool;
 import api.ObjectType;
 import api.objects.CodeArg;
 import api.objects.CodeLine;
+import api.objects.typeconstants.ClassConstant;
 import api.objects.typeconstants.DoubleConstant;
+import api.objects.typeconstants.FieldRefConstant;
 import api.objects.typeconstants.FloatConstant;
 import api.objects.typeconstants.ImLazyConstant;
 import api.objects.typeconstants.IntegerConstant;
 import api.objects.typeconstants.LongConstant;
+import api.objects.typeconstants.NameAndTypeConstant;
 import api.objects.typeconstants.StringConstant;
 import api.objects.typeconstants.Utf8Constant;
 import java.util.ArrayList;
@@ -48,6 +51,7 @@ public class ByteCodeUtils
 
 	/**
 	 * Converts a decimal to a 4-digit hex value
+	 *
 	 * @param decimal
 	 * @return
 	 */
@@ -116,6 +120,19 @@ public class ByteCodeUtils
 		return null;
 	}
 
+	public static ObjectFromConstantPool getConstant(ConstPool constPool, int index)
+	{
+		ObjectFromConstantPool[] constants = getAllConstants(constPool);
+		for (ObjectFromConstantPool constant : constants)
+		{
+			if (constant.getIndex() == index)
+			{
+				return constant;
+			}
+		}
+		return null;
+	}
+
 	public static ObjectFromConstantPool[] getAllConstants(ConstPool constPool)
 	{
 		try
@@ -134,31 +151,43 @@ public class ByteCodeUtils
 				switch (objectType)
 				{
 					case CONST_UTF8:
-						Utf8Constant utf8Constant = new Utf8Constant(constPool.getUtf8Info(i));
+						Utf8Constant utf8Constant = new Utf8Constant(constPool, i);
 						constantList.add(utf8Constant);
 						break;
 					case CONST_INTEGER:
-						IntegerConstant integerConstant = new IntegerConstant(constPool.getIntegerInfo(i));
+						IntegerConstant integerConstant = new IntegerConstant(constPool, i);
 						constantList.add(integerConstant);
 						break;
 					case CONST_FLOAT:
-						FloatConstant floatConstant = new FloatConstant(constPool.getFloatInfo(i));
+						FloatConstant floatConstant = new FloatConstant(constPool, i);
 						constantList.add(floatConstant);
 						break;
 					case CONST_LONG:
-						LongConstant longConstant = new LongConstant(constPool.getLongInfo(i));
+						LongConstant longConstant = new LongConstant(constPool, i);
 						constantList.add(longConstant);
 						break;
 					case CONST_DOUBLE:
-						DoubleConstant doubleConstant = new DoubleConstant(constPool.getDoubleInfo(i));
+						DoubleConstant doubleConstant = new DoubleConstant(constPool, i);
 						constantList.add(doubleConstant);
 						break;
 					case CONST_STRING:
-						StringConstant stringConstant = new StringConstant(constPool.getStringInfo(i));
+						StringConstant stringConstant = new StringConstant(constPool, i);
 						constantList.add(stringConstant);
 						break;
+					case CONST_CLASS:
+						ClassConstant classConstant = new ClassConstant(constPool, i);
+						constantList.add(classConstant);
+						break;
+					case CONST_FIELDREF:
+						FieldRefConstant fieldRefConstant = new FieldRefConstant(constPool, i);
+						constantList.add(fieldRefConstant);
+						break;
+					case CONST_NAMEANDTYPE:
+						NameAndTypeConstant nameAndTypeConstant = new NameAndTypeConstant(constPool, i);
+						constantList.add(nameAndTypeConstant);
+						break;
 					default:
-						ImLazyConstant imLazyConstant = new ImLazyConstant(objectType);
+						ImLazyConstant imLazyConstant = new ImLazyConstant(constPool, i, objectType);
 						constantList.add(imLazyConstant);
 						break;
 				}
@@ -191,6 +220,7 @@ public class ByteCodeUtils
 
 	/**
 	 * Arrays are unorganized. You must get a CodeLine from it's position in the method.
+	 *
 	 * @param codeLines
 	 * @param pos
 	 * @return
