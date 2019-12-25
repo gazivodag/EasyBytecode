@@ -29,8 +29,6 @@ public class CodeArg
 		int ye1 = Integer.parseInt(hex.substring(0, 2), 16);
 		int ye2= Integer.parseInt(hex.substring(2, 4), 16);
 
-		System.out.println("CODEARG CREATION: arg1: " + ye1 + " arg2: " + ye2);
-
 		this.arg1 = ye1;
 		this.arg2 = ye2;
 	}
@@ -44,15 +42,5 @@ public class CodeArg
 	{
 		return ByteCodeUtils.decimalToHex(getAsDecimal());
 	}
-
-//	public int getAsDecimalArg1()
-//	{
-//		return Integer.parseInt(getAsHex().substring(0, 2), 16);
-//	}
-//
-//	public int getAsDecimalArg2()
-//	{
-//		return Integer.parseInt(getAsHex().substring(2, 4), 16);
-//	}
 
 }
